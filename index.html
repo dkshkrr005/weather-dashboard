@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Weather Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+
+    <header>
+      <h1>Weather and Plan My Day</h1>
+      <form id="search-form">
+        <input id="city-input" type="text" placeholder="Search a city" required>
+        <button type="submit">Search</button>
+      </form>
+      <button id="unit-toggle" type="button">°C</button>
+    </header>
+
+    <p id="status"></p>
+
+    <section id="current" class="card hidden">
+      <h2 id="city-name">City name</h2>
+      <p>Temperature: <span id="temp">--</span></p>
+      <p>Conditions: <span id="description">--</span></p>
+      <p>Feels like: <span id="feels-like">--</span></p>
+      <p>Wind: <span id="wind">--</span></p>
+    </section>
+
+    <section id="advice" class="card hidden">
+      <h2>Plan my day</h2>
+      <ul id="advice-list"></ul>
+    </section>
+
+    <section id="forecast" class="forecast hidden"></section>
+
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
