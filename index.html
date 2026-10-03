@@ -12,6 +12,7 @@
     <header>
       <h1>Weather and Plan My Day</h1>
       <form id="search-form">
+        <label for="city-input">City</label>
         <input id="city-input" type="text" placeholder="Search a city" required>
         <button type="submit">Search</button>
       </form>
@@ -19,23 +20,61 @@
     </header>
 
     <p id="status"></p>
-
+<!-- Current weather: filled in by JavaScript later -->
     <section id="current" class="card hidden">
       <h2 id="city-name">City name</h2>
+      <p id="icon">☀️</p>
       <p>Temperature: <span id="temp">--</span></p>
       <p>Conditions: <span id="description">--</span></p>
       <p>Feels like: <span id="feels-like">--</span></p>
       <p>Wind: <span id="wind">--</span></p>
     </section>
-
+<!-- Current weather: filled in by JavaScript later -->
     <section id="advice" class="card hidden">
       <h2>Plan my day</h2>
-      <ul id="advice-list"></ul>
+      <ul id="advice-list">
+        <li>Carry an Umbrella</li>
+        <li>Wear Sunscreen</li>
+      </ul>
+    </section>
+<!-- Current weather: filled in by JavaScript later -->
+    <section id="forecast" class="forecast hidden">
+      <div class="day">
+        <p class="day-name">Monday</p>
+        <p class="day-icon">☀️</p>
+        <p class="day-temps">22° / 14°</p>
+        <p class="day-rain">Rain: 10%</p>
+        <p class="day-name">Tueday</p>
+        <p class="day-icon">☀️</p>
+        <p class="day-temps">22° / 14°</p>
+        <p class="day-rain">Rain: 10%</p>
+        <p class="day-name">Wednesday</p>
+        <p class="day-icon">☀️</p>
+        <p class="day-temps">22° / 14°</p>
+        <p class="day-rain">Rain: 10%</p>
+        <p class="day-name">Thursday</p>
+        <p class="day-icon">☀️</p>
+        <p class="day-temps">22° / 14°</p>
+        <p class="day-rain">Rain: 10%</p>
+        <p class="day-name">Friday</p>
+        <p class="day-icon">☀️</p>
+        <p class="day-temps">22° / 14°</p>
+        <p class="day-rain">Rain: 10%</p>
+        <p class="day-name">Saturday</p>
+        <p class="day-icon">☀️</p>
+        <p class="day-temps">22° / 14°</p>
+        <p class="day-rain">Rain: 10%</p>
+        <p class="day-name">Sunday</p>
+        <p class="day-icon">☀️</p>
+        <p class="day-temps">22° / 14°</p>
+        <p class="day-rain">Rain: 10%</p>
+      </div>
     </section>
 
-    <section id="forecast" class="forecast hidden"></section>
-
   </main>
+  <footer>
+    <p>Weather data by <a href="https://open-meteo.com/">Open-Meteo.com</a></p>
+  </footer>
   <script src="script.js"></script>
 </body>
 </html>
