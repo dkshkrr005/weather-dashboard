@@ -19,7 +19,7 @@ body {
 }
 
 .app {
-    max-width: 720px;
+    max-width: 800px;
     margin: 0 auto;
     padding: 1rem;
 }
@@ -88,8 +88,8 @@ button:focus-visible {
 
 .forecast {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
     margin-bottom: 1rem;
 }
 
@@ -117,7 +117,27 @@ button:focus-visible {
     color: var(--muted);
 }
 
+.day-temps {
+    font-size: 0.9rem;
+}
+
 /* .hidden {
     display: none;
 } */
 
+@media (max-width: 800px) {
+    .forecast {
+        grid-template-columns: 1fr;
+    }
+
+    .day {
+        display: flex;
+        justify-content: space-between;
+        aligh-text: center;
+        padding: 0.5rem 1rem;
+    }
+
+    .day-icon {
+        font-size: 1.5rem;
+    }
+}
