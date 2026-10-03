@@ -123,9 +123,9 @@ button:focus-visible {
     font-size: 0.9rem;
 }
 
-/* .hidden {
+.hidden {
     display: none;
-} */
+}
 
 #current {
     text-align: center;
