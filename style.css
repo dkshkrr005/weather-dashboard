@@ -9,10 +9,28 @@
 * {
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
   font-family: system-ui, sans-serif;
   line-height: 1.5;
+}
+
+.app {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+footer a {
+    color: var(--accent);
 }
