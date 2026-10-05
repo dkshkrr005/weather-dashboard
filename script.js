@@ -10,6 +10,11 @@ console.log(searchForm, cityInput, statusEl, unitToggle);
 searchForm.addEventListener('submit', function (event) {
     event.preventDefault();
     const city = cityInput.value.trim();
-    statusEl.textContent = 'You searched for:' + city;
+
+    if (city === '') {
+        statusEl.textContent = 'Please enter a city name.';
+        return;
+    }
+    statusEl.textContent = 'You searched for: ' + city;
 });
 
