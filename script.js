@@ -12,7 +12,7 @@ async function getCoordinates(cityName) {
     const response = await fetch(url);
 
     if (!response.ok) {
-        throw new Error('Geocoding sercvice error');
+        throw new Error('Geocoding service error');
     }
 
     const data = await response.json();
@@ -21,11 +21,11 @@ async function getCoordinates(cityName) {
         throw new Error('City not found');
     }
 
-    const place = data.result[0];
+    const place = data.results[0];
     return {
         name: place.name,
         country: place.country,
-        latitude: placce.latitude,
+        latitude: place.latitude,
         longitude: place.longitude
     };
 }
@@ -45,15 +45,11 @@ searchForm.addEventListener('submit', async function (event) {
         console.log(place);
         statusE1.textcontent = 'Found: ' + place.name + ', ' + place.country;
     } catch (error) {
+        console.error(error);
         if (error.message === 'City not found') {
-            statusE1.textcontent = 'Could not find "' + city + '". Chech the speeling.';
+            statusE1.textcontent = 'Could not find "' + city + '". Chech the spelling.';
         } else {
             statusE1.textcontent = 'Something went wrong. Check your connection and try again.';
         }
     }
-
-    const data = await getCoordinates(city);
-    console.log(data);
-    const place = data.results[0];
-    console.log(place.name, place.country, place.latitude, place.longitude);
 });
