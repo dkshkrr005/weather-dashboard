@@ -78,6 +78,31 @@ function renderCurrent(place, weather) {
     document.getElementById('current').classList.remove('hidden');
 }
 
+function renderForecast(daily) {
+    const container = document.getElementById('forecast');
+    const symbol = unit === 'celsius' ? '°C' : '°F';
+    container.innerHTML = '';
+
+    for(let i = 0; i < daily.time.length; i++) {
+        const info = describeWeather(daily.weather_code[i]);
+        const dayName = new Date(daily.time[i] + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short' });
+
+        const card = document.createElement('div');
+        card.className = 'day';
+
+        card.innerHTML = `
+            <p class="day-name">${dayName}</p>
+            <p class="day-icon">${info.icon}</p>
+            <p class="day-temps">${Math.round(daily.temperature_2m_max[i])}° / ${Math.round(daily.temperature_2m_min[i])}°</p>
+            <p class="day-rain">Rain: ${daily.precipitation_probability_max[i]}%</p>
+        `;
+
+        container.appendChild(card);
+    }
+
+    container.classList.remove('hidden');
+}
+
 searchForm.addEventListener('submit', async function (event) {
     event.preventDefault();
     const city = cityInput.value.trim();
@@ -96,6 +121,7 @@ searchForm.addEventListener('submit', async function (event) {
         const weather = await getWeather(place.latitude, place.longitude);
 
         renderCurrent(place, weather);
+        renderForecast(weather.daily);
         statusEl.textContent = '';
 
     } catch (error) {
