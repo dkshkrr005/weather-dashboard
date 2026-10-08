@@ -56,25 +56,24 @@ function describeWeather(code) {
     if (code === 85 || code === 86) return { icon: '❄️', text: 'Snow showers' };
     if (code >= 95) return { icon: '⛈️', text: 'Thunderstorm' };
     return { icon: '❓', text: 'Unknown' };
-    }
+}
 
 function renderCurrent(place, weather) {
     const current = weather.current;
     const symbol = unit === 'celsius' ? '°C' : '°F';
     const info = describeWeather(current.weather_code);
 
-    // TODO 1: set the text of #city-name to place.name + ', ' + place.country
-    document.getElementById('city-name').textContent = place.name + ', ' + place.country
-    // TODO 2: set the text of #icon to info.icon
+    document.getElementById('city-name').textContent = place.name + ', ' + place.country;
+
     document.getElementById('icon').textContent = info.icon
-    // TODO 3: set the text of #temp to Math.round(current.temperature_2m) + symbol
-    document.getElementById('temp').textContent = Math.round(current.temperature_2m) + symbol
-    // TODO 4: set the text of #description to info.text
-    document.getElementById('description').textContent = info.text 
-    // TODO 5: set the text of #feels-like to Math.round(current.apparent_temperature) + symbol
-    document.getElementById('feels-like').textContent = Math.round(current.apparent_temperature) + symbol
-    // TODO 6: set the text of #wind to Math.round(current.wind_speed_10m) + ' km/h'
-    document.getElementById('wind').textContent = Math.round(current.wind_speed_10m) + ' km/h'
+
+    document.getElementById('temp').textContent = Math.round(current.temperature_2m) + symbol;
+
+    document.getElementById('description').textContent = info.text;
+
+    document.getElementById('feels-like').textContent = Math.round(current.apparent_temperature) + symbol;
+
+    document.getElementById('wind').textContent = Math.round(current.wind_speed_10m) + ' km/h';
 
     document.getElementById('current').classList.remove('hidden');
 }
@@ -95,10 +94,10 @@ searchForm.addEventListener('submit', async function (event) {
         statusEl.textContent = 'Loading weather for ' + place.name + '...';
 
         const weather = await getWeather(place.latitude, place.longitude);
-        
+
         renderCurrent(place, weather);
         statusEl.textContent = '';
-        
+
     } catch (error) {
         console.error(error);
         if (error.message === 'City not found') {
