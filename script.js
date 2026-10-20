@@ -6,6 +6,7 @@ const statusEl = document.getElementById('status');
 const unitToggle = document.getElementById('unit-toggle');
 
 let unit = 'celsius';
+let lastCity = '';
 
 console.log(searchForm, cityInput, statusEl, unitToggle);
 
@@ -65,7 +66,7 @@ function renderCurrent(place, weather) {
 
     document.getElementById('city-name').textContent = place.name + ', ' + place.country;
 
-    document.getElementById('icon').textContent = info.icon
+    document.getElementById('icon').textContent = info.icon;
 
     document.getElementById('temp').textContent = Math.round(current.temperature_2m) + symbol;
 
@@ -80,7 +81,6 @@ function renderCurrent(place, weather) {
 
 function renderForecast(daily) {
     const container = document.getElementById('forecast');
-    const symbol = unit === 'celsius' ? '°C' : '°F';
     container.innerHTML = '';
 
     for (let i = 0; i < daily.time.length; i++) {
@@ -157,15 +157,8 @@ function renderAdvice(tips) {
     document.getElementById('advice').classList.remove('hidden');
 }
 
-searchForm.addEventListener('submit', async function (event) {
-    event.preventDefault();
-    const city = cityInput.value.trim();
-
-    if (city === '') {
-        statusEl.textContent = 'Please type a city name.';
-        return;
-    }
-
+async function loadCity(city) {
+    lastCity = '';
     clearResults();
     statusEl.textContent = 'Searching for ' + city + '...';
 
@@ -179,13 +172,36 @@ searchForm.addEventListener('submit', async function (event) {
         renderForecast(weather.daily);
         renderAdvice(getAdvice(weather));
         statusEl.textContent = '';
+        lastCity = city;
 
     } catch (error) {
         console.error(error);
         if (error.message === 'City not found') {
-            statusEl.textContent = 'Could not find "' + city + '". Check the spelling.';
+            statusEl.textContent = 'Could not find "' + city + '". Check the spelling.';        
         } else {
             statusEl.textContent = 'Something went wrong. Check your connection and try again.';
         }
+    }
+}
+
+searchForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const city = cityInput.value.trim();
+
+    if (city === '') {
+        statusEl.textContent = 'Please type a city name.';
+        return;
+    }
+
+    loadCity(city);
+});
+
+unitToggle.addEventListener('click', function() {
+    unit = unit === 'celsius' ? 'fahrenheit' : 'celsius';
+
+    unitToggle.textContent = unit === 'celsius' ? '°C' : '°F';
+
+    if (lastCity !== '') {
+        loadCity(lastCity);
     }
 });
