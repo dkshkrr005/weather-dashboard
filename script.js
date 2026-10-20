@@ -103,6 +103,12 @@ function renderForecast(daily) {
     container.classList.remove('hidden');
 }
 
+function clearResults() {
+    document.getElementById('current').classList.add('hidden');
+    document.getElementById('advice').classList.add('hidden');
+    document.getElementById('forecast').classList.add('hidden');
+}
+
 searchForm.addEventListener('submit', async function (event) {
     event.preventDefault();
     const city = cityInput.value.trim();
@@ -112,6 +118,7 @@ searchForm.addEventListener('submit', async function (event) {
         return;
     }
 
+    clearResults();
     statusEl.textContent = 'Searching for ' + city + '...';
 
     try {
