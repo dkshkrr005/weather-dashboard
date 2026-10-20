@@ -35,6 +35,13 @@ footer a {
     color: var(--accent);
 }
 
+footer {
+    max-width: 800px;
+    margin: 0 auto; 
+    padding: 0 1rem 1 rem;
+    color: var(--muted);
+}
+
 header {
     display: flex;
     flex-wrap: wrap;

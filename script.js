@@ -159,6 +159,22 @@ function renderAdvice(tips) {
     document.getElementById('advice').classList.remove('hidden');
 }
 
+function saveCity(city) {
+    try {
+        localStorage.setItem('lastCity', city);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+function getSavedCity() {
+    try {
+        return localStorage.getItem('lastCity') || '';
+    } catch (error) {
+        return '';
+    }
+}
+
 async function loadCity(city) {
     lastCity = '';
     searchButton.disabled = true;
