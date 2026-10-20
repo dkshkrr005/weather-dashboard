@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Weather Dashboard</title>
+  <meta name="description" content="A weather dashboard with a 7-day forecast and simple tips for planning your day.">
+  <title>Weather and Plan My Day</title>
   <link rel="stylesheet" href="style.css">
+ <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛅</text></svg>">
 </head>
+
 <body>
   <main class="app">
 
@@ -20,7 +24,7 @@
     </header>
 
     <p id="status"></p>
-<!-- Current weather: filled in by JavaScript later -->
+    <!-- Current weather: filled in by JavaScript -->
     <section id="current" class="card hidden">
       <h2 id="city-name">City name</h2>
       <p id="icon">☀️</p>
@@ -29,13 +33,13 @@
       <p>Feels like: <span id="feels-like">--</span></p>
       <p>Wind: <span id="wind">--</span></p>
     </section>
-<!-- Plan my day: advice list, filled in by JavaScript later -->
+    <!-- Plan my day: advice list, filled in by JavaScript later -->
     <section id="advice" class="card hidden">
       <h2>Plan my day</h2>
       <ul id="advice-list"></ul>
     </section>
 
-<!-- 7-day forecast: cards created by JavaScript later -->
+    <!-- 7-day forecast: cards created by JavaScript later -->
     <section id="forecast" class="forecast hidden"></section>
 
   </main>
@@ -44,4 +48,5 @@
   </footer>
   <script src="script.js"></script>
 </body>
+
 </html>

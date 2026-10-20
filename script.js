@@ -1,5 +1,3 @@
-
-
 const searchForm = document.getElementById('search-form');
 const cityInput = document.getElementById('city-input');
 const statusEl = document.getElementById('status');
@@ -9,8 +7,7 @@ const searchButton = document.getElementById('search-button');
 let unit = 'celsius';
 let lastCity = '';
 
-
-
+// --- API calls ---
 async function getCoordinates(cityName) {
     const url = 'https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(cityName) + '&count=1';
     const response = await fetch(url);
@@ -60,6 +57,7 @@ function describeWeather(code) {
     return { icon: '❓', text: 'Unknown' };
 }
 
+// --- Rendering---
 function renderCurrent(place, weather) {
     const current = weather.current;
     const symbol = unit === 'celsius' ? '°C' : '°F';
@@ -208,6 +206,7 @@ async function loadCity(city) {
     }
 }
 
+// ---Events and startup---
 searchForm.addEventListener('submit', function (event) {
     event.preventDefault();
     const city = cityInput.value.trim();
