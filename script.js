@@ -193,6 +193,7 @@ async function loadCity(city) {
         renderAdvice(getAdvice(weather));
         statusEl.textContent = '';
         lastCity = city;
+        saveCity(city);
 
     } catch (error) {
         console.error(error);
@@ -228,3 +229,10 @@ unitToggle.addEventListener('click', function () {
         loadCity(lastCity);
     }
 });
+
+const savedCity = getSavedCity();
+
+if (savedCity !== '') {
+    cityInput.value = savedCity;
+    loadCity(savedCity);
+}
