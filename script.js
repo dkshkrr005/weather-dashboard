@@ -83,7 +83,7 @@ function renderForecast(daily) {
     const symbol = unit === 'celsius' ? '°C' : '°F';
     container.innerHTML = '';
 
-    for(let i = 0; i < daily.time.length; i++) {
+    for (let i = 0; i < daily.time.length; i++) {
         const info = describeWeather(daily.weather_code[i]);
         const dayName = new Date(daily.time[i] + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short' });
 
@@ -109,6 +109,54 @@ function clearResults() {
     document.getElementById('forecast').classList.add('hidden');
 }
 
+function getAdvice(weather) {
+    const tips = [];
+    const feels = weather.current.apparent_temperature;
+    const feelsC = unit === 'celsius' ? feels : (feels - 32) * 5 / 9;
+    const wind = weather.current.wind_speed_10m;
+    const rainChance = weather.daily.precipitation_probability_max[0];
+    const uv = weather.daily.uv_index_max[0];
+
+    if (rainChance >= 50) {
+        tips.push('Carry an umbrella');
+    }
+
+    if (feelsC <= 10) {
+        tips.push('Wear a warm jacket');
+    }
+
+    if (feelsC >= 30) {
+        tips.push('Stay hydrated and avoid the midday heat');
+    }
+
+    if (uv >= 6) {
+        tips.push('Wear sunscreen');
+    }
+
+    if (wind >= 30) {
+        tips.push('Windy today: secure loose items');
+    }
+
+    if (tips.length === 0) {
+        tips.push('Conditions look easy today.');
+    }
+
+    return tips;
+}
+
+function renderAdvice(tips) {
+    const list = document.getElementById('advice-list');
+    list.innerHTML = '';
+
+    for (let i = 0; i < tips.length; i++) {
+        const item = document.createElement('li');
+        item.textContent = tips[i];
+        list.appendChild(item);
+    }
+
+    document.getElementById('advice').classList.remove('hidden');
+}
+
 searchForm.addEventListener('submit', async function (event) {
     event.preventDefault();
     const city = cityInput.value.trim();
@@ -129,6 +177,7 @@ searchForm.addEventListener('submit', async function (event) {
 
         renderCurrent(place, weather);
         renderForecast(weather.daily);
+        renderAdvice(getAdvice(weather));
         statusEl.textContent = '';
 
     } catch (error) {
