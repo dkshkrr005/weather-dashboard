@@ -1,14 +1,15 @@
-console.log('script.js is connected');
+
 
 const searchForm = document.getElementById('search-form');
 const cityInput = document.getElementById('city-input');
 const statusEl = document.getElementById('status');
 const unitToggle = document.getElementById('unit-toggle');
+const searchButton = document.getElementById('search-button');
 
 let unit = 'celsius';
 let lastCity = '';
 
-console.log(searchForm, cityInput, statusEl, unitToggle);
+
 
 async function getCoordinates(cityName) {
     const url = 'https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(cityName) + '&count=1';
@@ -86,12 +87,13 @@ function renderForecast(daily) {
     for (let i = 0; i < daily.time.length; i++) {
         const info = describeWeather(daily.weather_code[i]);
         const dayName = new Date(daily.time[i] + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short' });
+        const label = i === 0 ? 'Today' : dayName;
 
         const card = document.createElement('div');
         card.className = 'day';
 
         card.innerHTML = `
-            <p class="day-name">${dayName}</p>
+            <p class="day-name">${label}</p>
             <p class="day-icon">${info.icon}</p>
             <p class="day-temps">${Math.round(daily.temperature_2m_max[i])}° / ${Math.round(daily.temperature_2m_min[i])}°</p>
             <p class="day-rain">Rain: ${daily.precipitation_probability_max[i]}%</p>
@@ -159,6 +161,8 @@ function renderAdvice(tips) {
 
 async function loadCity(city) {
     lastCity = '';
+    searchButton.disabled = true;
+    unitToggle.disabled = true;
     clearResults();
     statusEl.textContent = 'Searching for ' + city + '...';
 
@@ -177,10 +181,13 @@ async function loadCity(city) {
     } catch (error) {
         console.error(error);
         if (error.message === 'City not found') {
-            statusEl.textContent = 'Could not find "' + city + '". Check the spelling.';        
+            statusEl.textContent = 'Could not find "' + city + '". Check the spelling.';
         } else {
             statusEl.textContent = 'Something went wrong. Check your connection and try again.';
         }
+    } finally {
+        searchButton.disabled = false;
+        unitToggle.disabled = false;
     }
 }
 
@@ -196,7 +203,7 @@ searchForm.addEventListener('submit', function (event) {
     loadCity(city);
 });
 
-unitToggle.addEventListener('click', function() {
+unitToggle.addEventListener('click', function () {
     unit = unit === 'celsius' ? 'fahrenheit' : 'celsius';
 
     unitToggle.textContent = unit === 'celsius' ? '°C' : '°F';

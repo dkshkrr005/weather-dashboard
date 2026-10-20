@@ -82,6 +82,11 @@ button:hover {
     opacity: 0.85;
 }
 
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 input:focus,
 button:focus-visible {
     outline: 2px solid var(--accent);
