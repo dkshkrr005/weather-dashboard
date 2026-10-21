@@ -173,6 +173,23 @@ function getSavedCity() {
     }
 }
 
+function saveUnit(value) {
+    try {
+        localStorage.setItem('unit', value);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+function getSavedUnit() {
+    try {
+        const value = localStorage.getItem('unit');
+        return value === 'fahrenheit' ? 'fahrenheit' : 'celsius';
+    } catch (error) {
+        return 'celsius';
+    }
+}
+
 async function loadCity(city) {
     lastCity = '';
     searchButton.disabled = true;
@@ -221,6 +238,7 @@ searchForm.addEventListener('submit', function (event) {
 
 unitToggle.addEventListener('click', function () {
     unit = unit === 'celsius' ? 'fahrenheit' : 'celsius';
+    saveUnit(unit);
 
     unitToggle.textContent = unit === 'celsius' ? '°C' : '°F';
 
@@ -228,6 +246,9 @@ unitToggle.addEventListener('click', function () {
         loadCity(lastCity);
     }
 });
+
+unit = getSavedUnit();
+unitToggle.textContent = unit === 'celsius' ? '°C' : '°F';
 
 const savedCity = getSavedCity();
 
