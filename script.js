@@ -29,7 +29,7 @@ async function getCoordinates(cityName) {
 
 async function getWeather(latitude, longitude) {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}`
-        + '&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation'
+        + '&current=is_day,temperature_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation'
         + '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,uv_index_max'
         + `&temperature_unit=${unit}`
         + `&wind_speed_unit=${unit === 'celsius' ? 'kmh' : 'mph'}`
@@ -63,7 +63,7 @@ function renderCurrent(place, weather) {
     const current = weather.current;
     const symbol = unit === 'celsius' ? '°C' : '°F';
     const info = describeWeather(current.weather_code);
-    const windLabel = unit === 'celsius' ? 'km/h' : 'mph'
+    const windLabel = unit === 'celsius' ? ' km/h' : ' mph';
 
     document.getElementById('city-name').textContent = place.name + ', ' + place.country;
 
@@ -109,6 +109,10 @@ function clearResults() {
     document.getElementById('current').classList.add('hidden');
     document.getElementById('advice').classList.add('hidden');
     document.getElementById('forecast').classList.add('hidden');
+}
+
+function applyTheme(isDay) {
+    document.body.classList.toggle('day', isDay === 1);
 }
 
 function getAdvice(weather) {
@@ -207,6 +211,7 @@ async function loadCity(city) {
         const weather = await getWeather(place.latitude, place.longitude);
 
         renderCurrent(place, weather);
+        applyTheme(weather.current.is_day);
         renderForecast(weather.daily);
         renderAdvice(getAdvice(weather));
         statusEl.textContent = '';
@@ -226,7 +231,7 @@ async function loadCity(city) {
     }
 }
 
-// ---Events and startup ---
+// --- Events and startup ---
 searchForm.addEventListener('submit', function (event) {
     event.preventDefault();
     const city = cityInput.value.trim();
