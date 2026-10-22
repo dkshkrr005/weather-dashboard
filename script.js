@@ -32,6 +32,7 @@ async function getWeather(latitude, longitude) {
         + '&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation'
         + '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,uv_index_max'
         + `&temperature_unit=${unit}`
+        + `&wind_speed_unit=${unit === 'celsius' ? 'kmh' : 'mph'}`
         + '&timezone=auto&forecast_days=7';
 
     const response = await fetch(url);
@@ -57,11 +58,12 @@ function describeWeather(code) {
     return { icon: '❓', text: 'Unknown' };
 }
 
-// --- Rendering---
+// --- Rendering ---
 function renderCurrent(place, weather) {
     const current = weather.current;
     const symbol = unit === 'celsius' ? '°C' : '°F';
     const info = describeWeather(current.weather_code);
+    const windLabel = unit === 'celsius' ? 'km/h' : 'mph'
 
     document.getElementById('city-name').textContent = place.name + ', ' + place.country;
 
@@ -73,7 +75,7 @@ function renderCurrent(place, weather) {
 
     document.getElementById('feels-like').textContent = Math.round(current.apparent_temperature) + symbol;
 
-    document.getElementById('wind').textContent = Math.round(current.wind_speed_10m) + ' km/h';
+    document.getElementById('wind').textContent = Math.round(current.wind_speed_10m) + windLabel;
 
     document.getElementById('current').classList.remove('hidden');
 }
@@ -114,6 +116,7 @@ function getAdvice(weather) {
     const feels = weather.current.apparent_temperature;
     const feelsC = unit === 'celsius' ? feels : (feels - 32) * 5 / 9;
     const wind = weather.current.wind_speed_10m;
+    const windKmh = unit === 'celsius' ? wind : wind * 1.60934;
     const rainChance = weather.daily.precipitation_probability_max[0];
     const uv = weather.daily.uv_index_max[0];
 
@@ -133,7 +136,7 @@ function getAdvice(weather) {
         tips.push('Wear sunscreen');
     }
 
-    if (wind >= 30) {
+    if (windKmh >= 30) {
         tips.push('Windy today: secure loose items');
     }
 
@@ -223,7 +226,7 @@ async function loadCity(city) {
     }
 }
 
-// ---Events and startup---
+// ---Events and startup ---
 searchForm.addEventListener('submit', function (event) {
     event.preventDefault();
     const city = cityInput.value.trim();
