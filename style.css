@@ -7,11 +7,16 @@
 }
 
 body.day {
-    --bg: #e0f2fe;
+    --bg: #bae6fd;
     --card: #ffffff;
     --text: #0f172a;
     --muted: #475569;
     --accent: #0369a1;
+}
+
+body.day .card,
+body.day .day {
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.15);
 }
 
 * {
@@ -179,7 +184,8 @@ button:focus-visible {
 
 #advice-list {
     margin: 0;
-    padding-left: 1.25rem;
+    padding-left: 0;
+    list-style: none;
 }
 
 #advice-list li {
