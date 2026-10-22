@@ -3,9 +3,11 @@ const cityInput = document.getElementById('city-input');
 const statusEl = document.getElementById('status');
 const unitToggle = document.getElementById('unit-toggle');
 const searchButton = document.getElementById('search-button');
+const locateButton = document.getElementById('locate-button');
 
 let unit = 'celsius';
 let lastCity = '';
+let lastPlace = null;
 
 // --- API calls ---
 async function getCoordinates(cityName) {
@@ -64,8 +66,9 @@ function renderCurrent(place, weather) {
     const symbol = unit === 'celsius' ? '°C' : '°F';
     const info = describeWeather(current.weather_code);
     const windLabel = unit === 'celsius' ? ' km/h' : ' mph';
+    const title = place.country ? place.name + ', ' + place.country : place.name;
 
-    document.getElementById('city-name').textContent = place.name + ', ' + place.country;
+    document.getElementById('city-name').textContent = title;
 
     document.getElementById('icon').textContent = info.icon;
 
@@ -197,15 +200,17 @@ function getSavedUnit() {
     }
 }
 
-async function loadCity(city) {
+async function loadCity(city, knownPlace) {
     lastCity = '';
+    lastPlace = null;
     searchButton.disabled = true;
     unitToggle.disabled = true;
+    locateButton.disabled = true;
     clearResults();
-    statusEl.textContent = 'Searching for ' + city + '...';
+    statusEl.textContent = knownPlace ? 'Loading weather...' : 'Searching for ' + city + '...';
 
     try {
-        const place = await getCoordinates(city);
+        const place = knownPlace || await getCoordinates(city);
         statusEl.textContent = 'Loading weather for ' + place.name + '...';
 
         const weather = await getWeather(place.latitude, place.longitude);
@@ -216,7 +221,10 @@ async function loadCity(city) {
         renderAdvice(getAdvice(weather));
         statusEl.textContent = '';
         lastCity = city;
-        saveCity(city);
+        lastPlace = place;
+        if (!knownPlace) {
+            saveCity(city);
+        }
 
     } catch (error) {
         console.error(error);
@@ -228,10 +236,42 @@ async function loadCity(city) {
     } finally {
         searchButton.disabled = false;
         unitToggle.disabled = false;
+        locateButton.disabled = false;
     }
 }
 
 // --- Events and startup ---
+function useMyLocation() {
+    if (!navigator.geolocation) {
+        statusEl.textContent = 'Your browser does not support location.';
+        return;
+    }
+
+    statusEl.textContent = 'Getting your location...';
+    
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+            const place = {
+                name: 'Your location',
+                country: '',
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            };
+            loadCity('Your location', place);
+        },
+
+        function (error) {
+            if (error.code === 1) {
+                statusEl.textContent = 'Location permission was denied. You can still search for city.';
+            } else {
+                statusEl.textContent = 'Could not get your location. Try searching for a city.';
+            }
+        }
+    );
+}
+
+locateButton.addEventListener('click', useMyLocation);
+
 searchForm.addEventListener('submit', function (event) {
     event.preventDefault();
     const city = cityInput.value.trim();
@@ -251,7 +291,7 @@ unitToggle.addEventListener('click', function () {
     unitToggle.textContent = unit === 'celsius' ? '°C' : '°F';
 
     if (lastCity !== '') {
-        loadCity(lastCity);
+        loadCity(lastCity, lastPlace);
     }
 });
 
